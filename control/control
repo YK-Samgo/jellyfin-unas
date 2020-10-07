@@ -1,0 +1,10 @@
+Package: jellyfin-unas
+Version: 0.0.1
+Architecture: amd64
+Maintainer: YK
+Installed-Size: 128
+Depends: jellyfin, unas-desktop
+Section: admin
+Priority: optional
+Description: jellyfin-unas based on jellyfin. 
+ Jellyfin organizes all of your personal media so you can easily access and enjoy it.

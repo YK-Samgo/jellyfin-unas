@@ -1,0 +1,18 @@
+.jellyfin_manager {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	background: #FFFFFF;
+	font-family : 微软雅黑,宋体;
+	font-size : 12px;
+}
+.jellyfin_page_logo{
+	width: 128px;
+	height: 128px;
+	background: url(../images/pagelogo.png) no-repeat;
+	margin: 0px auto;
+	margin-right: 60px;
+	display:block;
+}

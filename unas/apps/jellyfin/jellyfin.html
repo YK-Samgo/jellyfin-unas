@@ -1,0 +1,138 @@
+<html>
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <title>U-NAS</title>
+	    <link rel="stylesheet" href="../apps/jellyfin/css/jellyfin.css" type="text/css" />
+		
+		<script language="JavaScript" type="text/javascript">
+			jQuery.noConflict();
+			(function(){
+				GetJellyfinMediaServerStatus();
+				jQuery('#jellyfin_setting_enablecheck').click(function(){
+					if((jQuery('#jellyfin_setting_enablecheck').prop('checked') && jQuery('#jellyfin_setting_enablecheck').attr('status')=="disable") || (!jQuery('#jellyfin_setting_enablecheck').prop('checked') && jQuery('#jellyfin_setting_enablecheck').attr('status')=="enable")){
+						jQuery("#jellyfin_setting_apply").attr("class","unas_button");
+					}else{
+						jQuery("#jellyfin_setting_apply").attr("class","unas_button_disabled");
+					}
+				});
+			})();
+			function GetJellyfinMediaServerStatus(){
+				jQuery('#jellyfin_setting_waiting_content').attr("style","display:block");
+				jQuery('#jellyfin_setting_waiting_logo').attr("style","display:block");
+				jQuery.ajax({
+					url: "/apps/jellyfin/includes/services_jellyfin.php", 
+					data: {action: "getjellyfinstate"},
+					type: "POST",
+					async: true,
+					timeout: 120000,
+					success: function(data) {
+						if(data == 'enable'){
+							jQuery('#jellyfin_setting_enablecheck').prop('checked','true');
+							jQuery('#jellyfin_setting_enablecheck').attr('status','enable');
+							jQuery('#jellyfin_main_open').attr('class','unas_button');
+						}else{
+							jQuery('#jellyfin_setting_enablecheck').attr('status','disable');
+							jQuery('#jellyfin_main_open').attr('class','unas_button_disabled');
+						}
+						jQuery("#jellyfin_setting_apply").attr("class","unas_button_disabled");
+						jQuery('#jellyfin_setting_waiting_content').attr("style","display:none");
+						jQuery('#jellyfin_setting_waiting_logo').attr("style","display:none");
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						alert(textStatus);
+						jQuery('#jellyfin_setting_waiting_content').attr("style","display:none");
+						jQuery('#jellyfin_setting_waiting_logo').attr("style","display:none");
+					}
+				});
+			}
+			function StartJellyfinMediaServer(){
+				if(jQuery('#jellyfin_main_open').attr('class')=='unas_button_disabled'){
+					return false;
+				}
+				var address = "<?php echo 'http://'.$_SERVER['SERVER_NAME'];?>"+':8096/jellyfin';
+				window.open(address, '_blank').location;
+			}
+			function JellyfinMediaServerApply(){
+				if(jQuery("#jellyfin_setting_apply").attr("class") == "unas_button_disabled")
+					return false;
+				jQuery('#jellyfin_setting_waiting_content').attr("style","display:block");
+				jQuery('#jellyfin_setting_waiting_logo').attr("style","display:block");
+				var setjellyfin = 'stopjellyfin';
+				if(jQuery('#jellyfin_setting_enablecheck').prop('checked') == true)
+				setjellyfin = 'startjellyfin';
+				jQuery.ajax({
+					url: "/apps/jellyfin/includes/services_jellyfin.php", 
+					data: {action: setjellyfin},
+					type: "POST",
+					async: true,
+					timeout: 120000,
+					success: function(data) {
+						jQuery('#jellyfin_setting_waiting_content').attr("style","display:none");
+						jQuery('#jellyfin_setting_waiting_logo').attr("style","display:none");
+						GetJellyfinMediaServerStatus();
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown){
+						alert(UNAS._(textStatus));
+						jQuery('#jellyfin_setting_waiting_content').attr("style","display:none");
+						jQuery('#jellyfin_setting_waiting_logo').attr("style","display:none");
+					}
+				});
+			}
+		</script>
+	</head>
+	<body>
+	<div id="jellyfin_page" class="jellyfin_manager">
+		<div id="jellyfin_main_waiting_content" class="unas_loading_modal" style="display: none;"></div>
+		<div id="jellyfin_main_waiting_logo" class="unas_loading" style="display: none;"></div>
+		<div class="unas_title">
+			<div btinfotableid="jellyfin_main_jellyfin_settings" id="jellyfin_main_jellyfin_settings_tab" class="unas_tab_sel">
+				<span>##$@jellyfin@$##Jellyfin Settings##$@jellyfin@$##</span>
+			</div>
+		</div>
+		<div id="jellyfin_main_jellyfin_settings" style="display: block;">
+			<div class="unas_content">
+				<div class="unas_content_left" style="width:500px;">
+					<div class="unas_items">
+						<ul>
+							<li class="unas_item_li">
+								<div class="unas_checkbox" style="float:left;">
+									<input type="checkbox" id="jellyfin_setting_enablecheck" status="">
+									<label for="jellyfin_setting_enablecheck"></label>
+								</div>
+								<span>##$@jellyfin@$##Enable Jellyfin##$@jellyfin@$##</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="unas_content_right">
+					<span class="jellyfin_page_logo"></span>
+				</div>
+			</div>
+			<div class="unas_footer">
+				<button class="unas_button_disabled" id="jellyfin_setting_apply" onClick="JellyfinMediaServerApply();">##$@jellyfin@$##Apply##$@jellyfin@$##</button>
+				<button class="unas_button" id="jellyfin_main_open" onclick="StartJellyfinMediaServer();" style="width:100px;">##$@jellyfin@$##Start Jellyfin##$@jellyfin@$##</button>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+        (function () {
+            var rt=document.getElementById('jellyfin_page');
+            var pageTranslators = window.top.UNAS.CreateNodesTranslators(rt.parentNode);
+            var OnChangeLanguage = function (e) {
+                for (var i = 0; i < pageTranslators.length; i++) {
+                    var node = pageTranslators[i].node;
+                    var p = pageTranslators[i].translateProperty;
+                    node[p] = window.top.UNAS._(pageTranslators[i].originalText);
+                }
+            }
+            OnChangeLanguage();
+            window.top.UNAS.Event.addEvent('ChangeLanguage', OnChangeLanguage);
+            window.addEventListener("unload", function (e) {
+                window.top.UNAS.Event.removeEvent('ChangeLanguage', OnChangeLanguage);
+                window.top.UNAS.SetAppState("Jellyfin","inactive");
+            }, false);
+        })();
+	</script>
+	</body>
+</html>
