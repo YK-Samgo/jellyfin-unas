@@ -1,0 +1,15 @@
+{
+	"appName": "Jellyfin",
+	"appVersion": "0.0.1",
+	"appJS": "app.js",
+	"appIcon": "images/logo.png",
+	"appScreenshot": "shot.png",
+	"appDeveloper": "YK",
+	"appSection": "Network",
+	"appSize": "3.7M",
+	"appInstalledSize": "4.8M",
+	"appRemovable": "YES",
+	"appTranslationFile": "languages/Translation",
+	"appPackageName": "jellyfin-unas",
+	"appDescription": "U-NAS Jellyfin App."
+}
