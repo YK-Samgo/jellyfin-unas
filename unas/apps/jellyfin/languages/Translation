@@ -3,9 +3,9 @@
         {
             "language": "简体中文",
             "table": [
-                [ "Jellyfin Media Server Settings", "jellyfin", "Jellyfin Media Server设置" ],
+                [ "Jellyfin Settings", "jellyfin", "Jellyfin 设置" ],
                 [ "Start Jellyfin", "jellyfin", "启动Jelyfin" ],
-                [ "Enable Jellyfin Media Server", "jellyfin", "启用Jellyfin Media Server服务" ],
+                [ "Enable Jellyfin Media Server", "jellyfin", "启用Jellyfin服务" ],
                 [ "Apply", "jellyfin", "应用" ]
             ]
         }
