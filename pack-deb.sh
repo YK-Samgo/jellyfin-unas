@@ -7,7 +7,7 @@ deb_name=jellyfin-unas.deb
 
 generate_md5() {
 	cd $jellyfin_dir
-	find unas/ -type f | xargs md5sum > DEBIAN/control/md5sums
+	find unas/ -type f | xargs md5sum > DEBIAN/md5sums
 	cd $work_dir
 }
 
